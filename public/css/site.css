@@ -1,0 +1,10 @@
+body {
+  font-family: HelveticaNeue-Light, 'Helvetica Neue', Helvetica, arial, sans-serif;
+}
+.crumbs {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+h1, h2 {
+  font-weight: normal;
+}
