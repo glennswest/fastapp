@@ -19,20 +19,59 @@ a:hover { text-decoration: underline; }
 h1, h2 {
   font-weight: normal;
   color: rgb(102,162,201);
+  margin: 5px 0 15px 0;
 }
+.content table {
+  margin-top: 12px;
+}
+.content th { 
+  font-weight: normal;
+  font-size: 12px;
+}
+td.number { text-align: right; }
+td.name { width: 300px; }
+td.count { width: 120px; }
 #document {
-  width: 96%;
-  height: 200px;
+  width: 900px;
+  height: 350px;
   padding: 10px;
 }
 .content {
   padding: 10px;
 }
-.footer {
-  background-color: rgb(211,222,193);
-  padding: 10px 10px 40px 10px;
-  margin: 40px 0;
-}
 form input {
   font-size: 18px;
+}
+div.popup {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  border: 3px solid rgb(211,222,193);
+  background-color: white;
+  z-index: 1;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 25px rgb(211,222,193);
+}
+div.popup .submit {
+  margin-top: 20px;
+}
+div.popup input[type="submit"] {
+  background-color: rgb(102,162,201);
+  border: none;
+  border-radius: 5px;
+  font-size: 24px;
+  color: white;
+  padding: 7px 20px 7px 20px;
+}
+div.popup input[type="submit"]:hover {
+  background-color: rgb(54,112,153);
+}
+div.popup a.close {
+  color: red;
+  font-size: 80%;
+  padding-left: 20px;
+}
+div.empty {
+  margin: 40px 0 0 0;
 }

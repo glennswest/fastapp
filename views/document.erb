@@ -1,6 +1,28 @@
 <div class="crumbs">
-  <a href="/">Overview</a> >
-  <a href="/<%= collection %>"><%= collection %></a> >
-  <%= id %>
+  <a href="/">Database</a> >
+  <a href="/<%= collection %>">Collection <%= collection %></a> >
+  Document <%= id %>
 </div>
-<pre><code><%= document %></code></pre>
+<div class="content">
+  <div>
+    <a href="#" class="popup" data="edit_document">Edit Document</a> | 
+    <a href="#" class="popup" data="delete_document">Delete Document</a>
+  </div>
+  <pre><code><%= document %></code></pre>
+</div>
+<div id="edit_document" class="popup" style="display:none;">
+  <h2>Edit Document</h2>
+  <p>JSON Data</p>
+  <form action="/<%= collection %>/<%= id %>" data="document" method="POST">
+    <div><textarea id="document" name="document"><%= document %></textarea></div>
+    <div class="submit"><input type="submit" value="Update"><a class="close">Cancel</a></div>    
+  </form>
+</div>
+<div id="delete_document" class="popup" style="display:none;">
+  <h2>Delete Document</h2>
+  <p>Are you sure you want to delete this document?</p>
+  <form action="/<%= collection %>/<%= id %>" data="document" method="POST">
+    <input type="hidden" name="_method" value="delete">
+    <div class="submit"><input type="submit" value="Delete"><a class="close">Cancel</a></div>    
+  </form>
+</div>

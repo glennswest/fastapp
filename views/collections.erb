@@ -1,20 +1,26 @@
 <div class="crumbs">
-  Overview
+  Database > Collections
 </div>
 <div class="content">
-  <h2>Collections</h2>
+  <div><a href="#" class="popup" data="new_collection">Add Collection</a></div>
   <% if collections.empty? %>
-    <%= "No Collections" %>
+    <div class="empty"><%= "This database has no collections" %></div>
   <% else %>
-    <% collections.each do |c| %>
-      <div><a href="/<%=c.name %>"><%= c.name %></a></div>
-    <% end %>
+    <table>
+      <tr><th>Name</th><th>Number of Documents</th></tr>
+      <% collections.each do |c| %>
+        <tr>
+          <td class="name"><a href="/<%=c.name %>"><%= c.name %></a></td>
+          <td class="count number"><%= c.count %></td>
+        </tr>
+      <% end %>
+    </table>
   <% end %>
 </div>
-<div class="footer">
-  <h2>New Collection</h2>
+<div id="new_collection" class="popup" data="collection" style="display:none;">
+  <h2>Add Collection</h2>
   <form action="/" method="POST">
-  <input type="text" id="collection_name" name="collection[name]" placeholder="Name" size="40">
-  <input type="submit" value="Create">
+    <div><input type="text" id="collection" name="collection" placeholder="Name" size="40"></div>
+    <div class="submit"><input type="submit" value="Create"><a class="close">Cancel</a></div>
   </form>
 </div>

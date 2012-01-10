@@ -1,27 +1,40 @@
 <div class="crumbs">
-  <a href="/">Overview</a> >
-  <%= collection %>
+  <a href="/">Database</a> > Collection <%= collection %> > Documents
 </div>
 <div class="content">
-  <h2>Documents</h2>
+  <div>
+    <a href="#" class="popup" data="new_document">Add Document</a>
+    <% if documents.count == 0 %>
+      | <a href="#" class="popup" data="delete_collection">Drop Collection</a>
+    <% end %>
+  </div>
   <% if documents.count == 0 %>
-    No Documents
+    <div class="empty">This collection has no documents</div>
   <% else %>
     <table>
+      <tr><th>Document Id</th><th>Document Data</th></tr>      
       <% documents.each do |d| %>
         <tr>
           <td><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
-          <td><%= html_escape(d.to_json) %></td>
+          <td><%= html_escape(exclude_id(d)) %></td>
         </tr>
       <% end %>
     </table>
   <% end %>
 </div>
-<div class="footer">
+<div id="new_document" class="popup" style="display:none;">
   <h2>New Document</h2>
-  <p>Javascript content</p>
-  <form id="new_document" action="/<%= collection %>" method="POST">
+  <p>JSON Data</p>
+  <form action="/<%= collection %>" data="document" method="POST">
     <div><textarea id="document" name="document"><%= document %></textarea></div>
-    <div><input type="submit" value="Create"></div>
+    <div class="submit"><input type="submit" value="Create"><a class="close">Cancel</a></div>    
+  </form>
+</div>
+<div id="delete_collection" class="popup" style="display:none;">
+  <h2>Drop Collection</h2>
+  <p>Are you sure you want to drop this collection?</p>
+  <form action="/<%= collection %>" data="document" method="POST">
+    <input type="hidden" name="_method" value="delete">
+    <div class="submit"><input type="submit" value="Drop"><a class="close">Cancel</a></div>    
   </form>
 </div>
