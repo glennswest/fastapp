@@ -11,11 +11,11 @@
   <% if documents.count == 0 %>
     <div class="empty">This collection has no documents</div>
   <% else %>
-    <table>
+    <table class="documents">
       <tr><th>Document Id</th><th>Document Data</th></tr>      
       <% documents.each do |d| %>
         <tr>
-          <td><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
+          <td class="document_id"><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
           <td><%= truncate(escape_html(exclude_id(d)),180) %></td>
         </tr>
       <% end %>

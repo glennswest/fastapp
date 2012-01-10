@@ -24,6 +24,8 @@ h1, h2 {
 }
 .content table {
   margin-top: 12px;
+}
+table.documents {
   width: 1200px;
 }
 .content th { 
@@ -33,6 +35,7 @@ h1, h2 {
 td.number { text-align: right; }
 td.name { width: 300px; }
 td.count { width: 120px; }
+td.document_id { width: 250px; }
 #document {
   width: 900px;
   height: 350px;
