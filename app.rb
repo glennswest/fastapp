@@ -39,6 +39,7 @@ else
 end
 
 get '/' do
+  headers["Cache-Control"] = "private" 
   erb :collections, :locals => { :collections => db.collections.reject { |x| x.name =~ /system\./ } }
 end
 
@@ -49,6 +50,7 @@ post '/' do
 end
 
 get '/:collection' do
+  headers["Cache-Control"] = "private" 
   name = params[:collection]
   collection = db.collection(params[:collection])
   skip = ( params[:skip] || "0" ).to_i
@@ -81,6 +83,7 @@ delete '/:collection' do
 end
 
 get '/:collection/:id' do
+  headers["Cache-Control"] = "private" 
   name = params[:collection]
   collection = db.collection(name)
   id = BSON::ObjectId(params[:id])
