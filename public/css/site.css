@@ -1,10 +1,30 @@
 body {
   font-family: HelveticaNeue-Light, 'Helvetica Neue', Helvetica, arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 .crumbs {
   font-size: 30px;
   margin-bottom: 20px;
+  background-color: #eaeaea;
+  padding: 10px;
 }
 h1, h2 {
   font-weight: normal;
+}
+#document {
+  width: 96%;
+  height: 200px;
+  padding: 10px;
+}
+.content {
+  padding: 10px;
+}
+.footer {
+  background-color: #eaeaea;
+  padding: 10px 10px 40px 10px;
+  margin: 40px 0;
+}
+form input {
+  font-size: 24px;
 }

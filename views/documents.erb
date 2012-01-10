@@ -2,22 +2,26 @@
   <a href="/">Database</a> |
   <%= collection %>
 </div>
-<h2>Documents</h2>
-<% if documents.count == 0 %>
-  No Documents
-<% else %>
-  <table>
-    <% documents.each do |d| %>
-      <tr>
-        <td><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
-        <td><%= html_escape(d.to_json) %></td>
-      </tr>
-    <% end %>
-  </table>
-<% end %>
-<h2>New Document</h2>
-<p>Javascript content</p>
-<form action="/<%= collection %>" method="POST">
-  <div><textarea id="document" name="document" rows="10" cols="80"><%= document %></textarea></div>
-  <div><input type="submit" value="Create"></div>
-</form>
+<div class="content">
+  <h2>Documents</h2>
+  <% if documents.count == 0 %>
+    No Documents
+  <% else %>
+    <table>
+      <% documents.each do |d| %>
+        <tr>
+          <td><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
+          <td><%= html_escape(d.to_json) %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>
+<div class="footer">
+  <h2>New Document</h2>
+  <p>Javascript content</p>
+  <form id="new_document" action="/<%= collection %>" method="POST">
+    <div><textarea id="document" name="document"><%= document %></textarea></div>
+    <div><input type="submit" value="Create"></div>
+  </form>
+</div>
