@@ -29,6 +29,7 @@ $(document).ready(function(){
       $('#json_error').addClass('error');
       e.preventDefault();
     } else {
+      $('#json_error').html('');
       $('#json_error').removeClass('error');
     }
   })
