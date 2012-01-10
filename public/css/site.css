@@ -3,14 +3,22 @@ body {
   margin: 0;
   padding: 0;
 }
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
 .crumbs {
+  color: rgb(102,162,201);
   font-size: 30px;
   margin-bottom: 20px;
-  background-color: #eaeaea;
+  background-color: rgb(211,222,193);
   padding: 10px;
 }
+.content a,
+.crumbs a { color: rgb(102,162,201); }
+.content a:visited,
+.crumbs a:visited { color: rgb(102,162,201); }
 h1, h2 {
   font-weight: normal;
+  color: rgb(102,162,201);
 }
 #document {
   width: 96%;
@@ -21,10 +29,10 @@ h1, h2 {
   padding: 10px;
 }
 .footer {
-  background-color: #eaeaea;
+  background-color: rgb(211,222,193);
   padding: 10px 10px 40px 10px;
   margin: 40px 0;
 }
 form input {
-  font-size: 24px;
+  font-size: 18px;
 }

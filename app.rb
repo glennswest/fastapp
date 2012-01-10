@@ -17,7 +17,7 @@ helpers Helpers
 db = Mongo::Connection.new.db('browser')
   
 get '/' do
-  erb :collections, :locals => { :collections => db.collections }
+  erb :collections, :locals => { :collections => db.collections.reject { |x| x.name == 'system.indexes' } }
 end
 
 post '/' do
