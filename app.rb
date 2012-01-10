@@ -14,6 +14,11 @@ module Helpers
   def exclude_id(d)
     d.reject { |k,v| k == "_id" }
   end
+  def truncate(s,n)
+    return s if s.length < n
+    n -= 4
+    s[0..n] + "..."
+  end
 end
 
 helpers Helpers

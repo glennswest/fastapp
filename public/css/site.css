@@ -24,6 +24,7 @@ h1, h2 {
 }
 .content table {
   margin-top: 12px;
+  width: 1200px;
 }
 .content th { 
   font-weight: normal;
