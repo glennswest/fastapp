@@ -19,6 +19,9 @@ module Helpers
     n -= 4
     s[0..n] + "..."
   end
+  def max(a,b)
+    a > b ? a : b
+  end
 end
 
 helpers Helpers
@@ -48,8 +51,18 @@ end
 get '/:collection' do
   name = params[:collection]
   collection = db.collection(params[:collection])
-  docs = collection.find
-  erb :documents, :locals => { :collection => name, :documents => docs, :document => "{\n}" }
+  skip = ( params[:skip] || "0" ).to_i
+  skip = 0 if skip < 0
+  page_size = 16
+  docs = collection.find({},{:skip => skip, :limit => page_size})
+  erb :documents, :locals => { 
+    :collection => name, 
+    :documents => docs, 
+    :document => "{\n}", 
+    :skip => skip, 
+    :count => collection.count,
+    :page_size => page_size 
+    }
 end
 
 post '/:collection' do

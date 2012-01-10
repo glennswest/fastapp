@@ -11,15 +11,26 @@
   <% if documents.count == 0 %>
     <div class="empty">This collection has no documents</div>
   <% else %>
-    <table class="documents">
-      <tr><th>Document Id</th><th>Document Data</th></tr>      
-      <% documents.each do |d| %>
-        <tr>
-          <td class="document_id"><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
-          <td><%= truncate(escape_html(exclude_id(d)),180) %></td>
-        </tr>
+    <div class="table_wrapper">
+      <table class="documents">
+        <tr><th>Document Id</th><th>Document Data</th></tr>      
+        <% documents.each do |d| %>
+          <tr>
+            <td class="document_id"><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
+            <td><%= truncate(escape_html(exclude_id(d)),180) %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="page_navigation">
+      <% if skip > 0  %>
+        <a href="/<%= collection %>?skip=<%= max(skip-page_size,0)%>">Previous</a>
       <% end %>
-    </table>
+      <% if skip > 0 && skip + page_size < count %> | <% end %>
+      <% if skip + page_size < count %>
+        <a href="/<%= collection %>?skip=<%= skip+page_size %>">Next</a>
+      <% end %>
+    </div>
   <% end %>
 </div>
 <div id="new_document" class="popup" style="display:none;">

@@ -11,7 +11,3 @@ Supports the following:
 * Delete document
 * Validates JSON in browser before posting document add or update
 
-The following are left as the proverbial exercise for the reader
-
-* Paging for long lists of collections and documents
-* Searching

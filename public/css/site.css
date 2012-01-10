@@ -91,3 +91,9 @@ div.empty {
   font-weight: bold;
   font-size: 20px;
 }
+.page_navigation {
+  margin-top: 20px;
+}
+.table_wrapper {
+  min-height: 400px;
+}
