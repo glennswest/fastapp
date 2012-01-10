@@ -8,8 +8,8 @@ disable :protection
 enable :method_override
 
 module Helpers
-  def html_escape(h)
-    CGI.escape_html(h.to_json)
+  def escape_html(h)
+    CGI.escapeHTML(h.to_json)
   end
   def exclude_id(d)
     d.reject { |k,v| k == "_id" }
@@ -18,10 +18,20 @@ end
 
 helpers Helpers
 
-db = Mongo::Connection.new.db('browser')
-  
+if ENV['VCAP_SERVICES']
+  service_type = "mongodb-1.8";
+  json = JSON.parse(ENV['VCAP_SERVICES']);
+  credentials = json[service_type][0]["credentials"]
+  puts credentials.inspect
+  conn = Mongo::Connection.new( credentials['host'], credentials['port'])
+  conn.add_auth( credentials['db'], credentials['username'], credentials['password'])
+  db = conn.db(credentials['db'])
+else
+  db = Mongo::Connection.new.db('browser')
+end
+
 get '/' do
-  erb :collections, :locals => { :collections => db.collections.reject { |x| x.name == 'system.indexes' } }
+  erb :collections, :locals => { :collections => db.collections.reject { |x| x.name =~ /system\./ } }
 end
 
 post '/' do

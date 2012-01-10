@@ -16,7 +16,7 @@
       <% documents.each do |d| %>
         <tr>
           <td><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
-          <td><%= html_escape(exclude_id(d)) %></td>
+          <td><%= escape_html(exclude_id(d)) %></td>
         </tr>
       <% end %>
     </table>
