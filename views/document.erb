@@ -14,6 +14,7 @@
   <h2>Edit Document</h2>
   <p>JSON Data</p>
   <form action="/<%= collection %>/<%= id %>" data="document" method="POST">
+    <div id="json_error"></div>
     <div><textarea id="document" name="document"><%= document %></textarea></div>
     <div class="submit"><input type="submit" value="Update"><a class="close">Cancel</a></div>    
   </form>
