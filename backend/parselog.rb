@@ -8,12 +8,12 @@ require 'iconv'
 include Mongo
 
 @client = MongoClient.new('localhost', 27017)
-@db     = @client['logparse-db']
+@db     = @client['fastapp']
 @col    = @db['data']
 
 @col.remove
 
-file = File.new("openstack-grizzly-repo.log","r")
+file = File.new("archive/openstack-grizzly-repo.log","r")
 while (line = file.gets)
      line_elements = line.split(" ")
      the_ipaddr = String.new(line_elements[1])

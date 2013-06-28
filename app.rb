@@ -74,16 +74,16 @@ end
 
 helpers Helpers
 
-if ENV['VCAP_SERVICES']
+if ENV['FASTAPP']
   service_type = "mongodb-1.8";
-  json = JSON.parse(ENV['VCAP_SERVICES']);
+  json = JSON.parse(ENV['FASTAPP']);
   credentials = json[service_type][0]["credentials"]
   puts credentials.inspect
   conn = Mongo::Connection.new( credentials['host'], credentials['port'])
   conn.add_auth( credentials['db'], credentials['username'], credentials['password'])
   db = conn.db(credentials['db'])
 else
-  db = Mongo::Connection.new.db('logparse-db')
+  db = Mongo::Connection.new.db('fastapp')
 end
 
 get '/' do
@@ -115,12 +115,21 @@ get '/:collection' do
   page_size = 16
   thesearch = Hash.new
   pp params
+  
   params.each {|key,value|
-         if key == "q"
-            values = value.split(',')
-            thekey = values[0]
-            thevalue = values[1]
-            thesearch[thekey] = thevalue
+         pp key
+         pp value
+         case key
+         when "splat"
+         when "captures"
+         when "collection"
+         else
+            if value.include?(",")
+              thevalue = value.split(",")
+             else 
+              thevalue = value
+              end
+            thesearch[key] = thevalue
             end
          }
   pp thesearch
