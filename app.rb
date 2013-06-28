@@ -43,16 +43,23 @@ module Helpers
   def fieldnames(c)
       headings = c.keys
       headings.delete("_id")
+      result = Array.new
       headings.each_with_index {|heading, index|
-          headings[index] = heading.capitalize
+          if @fields_included.empty? 
+             result <<  heading.capitalize
+            else
+             if @fields_included.include?(heading)
+                result <<  heading.capitalize
+                end
+             end 
           }
-      return(headings)
+      return(result)
   end
   def headings(c)
       fields = fieldnames(c)
       result = String.new
       fields.each {|thefield|
-          result << '<th>' + thefield
+             result << '<th>' + thefield
           }
       return(result)
   end
@@ -107,7 +114,7 @@ get '/:collection' do
 
   table = db.collection(name)
   firstrow = table.find_one()
-  row_headings = headings(firstrow)
+  @fields_included = Array.new
 
   collection = db.collection(params[:collection])
   skip = ( params[:skip] || "0" ).to_i
@@ -117,10 +124,22 @@ get '/:collection' do
   
   search_count = 0
   search_url = String.new
+  field_projection = Hash.new
   params.each {|key,value|
          pp key
          pp value
          case key
+         when "fields"
+              thefields = value.split(",")
+              fieldvalues = Hash.new
+              thefields.each{|f|
+                   fieldvalues[f] = 1
+                   @fields_included << f
+                   }
+              field_projection[:fields] = fieldvalues
+              pp field_projection
+         when "page_size"
+              page_size = value.to_i
          when "skip"
          when "splat"
          when "captures"
@@ -137,10 +156,16 @@ get '/:collection' do
               end
             end
          }
+  row_headings = headings(firstrow)
   pp thesearch
   pp search_url
-  docs = collection.find(thesearch,{:skip => skip, :limit => page_size})
-  erb :documents, :locals => { 
+  if page_size == 0
+     docs = collection.find(thesearch,field_projection)
+    else 
+     docs = collection.find(thesearch,field_projection,{:skip => skip, :limit => page_size})
+     end
+  if page_size == 0
+   erb :tables, :locals => { 
     :collection => name, 
     :documents => docs, 
     :document => "{\n}", 
@@ -150,6 +175,18 @@ get '/:collection' do
     :row_headings => row_headings,
     :search_url => search_url
     }
+   else
+    erb :documents, :locals => { 
+     :collection => name, 
+     :documents => docs, 
+     :document => "{\n}", 
+     :skip => skip, 
+     :count => collection.count,
+     :page_size => page_size,
+     :row_headings => row_headings,
+     :search_url => search_url
+     }
+   end
 end
 
 post '/:collection' do
