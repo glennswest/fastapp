@@ -41,9 +41,12 @@ module Helpers
       return headings(firstrow)
   end
   def fieldnames(c)
+      result = Array.new
+      if c.nil?
+         return(result)
+         end
       headings = c.keys
       headings.delete("_id")
-      result = Array.new
       headings.each_with_index {|heading, index|
           if @fields_included.empty? 
              result <<  heading.capitalize
@@ -162,7 +165,13 @@ get '/:collection' do
   if page_size == 0
      docs = collection.find(thesearch,field_projection)
     else 
-     docs = collection.find(thesearch,field_projection,{:skip => skip, :limit => page_size})
+     pagings = {:skip => skip, :limit => page_size}
+     options = Hash.new
+     options.merge!(pagings)
+     options.merge!(field_projection)
+     puts "Options"
+     pp options
+     docs = collection.find(thesearch,options)
      end
   if page_size == 0
    erb :tables, :locals => { 
