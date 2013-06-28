@@ -24,11 +24,11 @@
     </div>
     <div class="page_navigation">
       <% if skip > 0  %>
-        <a href="/<%= collection %>?skip=<%= max(skip-page_size,0)%>">Previous</a>
+        <a href="/<%= collection %>?skip=<%= max(skip-page_size,0)%><%= search_url %>">Previous</a>
       <% end %>
       <% if skip > 0 && skip + page_size < count %> | <% end %>
       <% if skip + page_size < count %>
-        <a href="/<%= collection %>?skip=<%= skip+page_size %>">Next</a>
+        <a href="/<%= collection %>?skip=<%= skip+page_size %><%= search_url %>">Next</a>
       <% end %>
     </div>
   <% end %>

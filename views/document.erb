@@ -1,6 +1,6 @@
 <div class="crumbs">
   <a href="/">Database</a> >
-  <a href="/<%= collection %>">Collection <%= collection %></a> >
+  <a href="/<%= collection %>">Table <%= collection %></a> >
   Document <%= id %>
 </div>
 <div class="content">
@@ -11,7 +11,7 @@
   <pre><code><%= document %></code></pre>
 </div>
 <div id="edit_document" class="popup" style="display:none;">
-  <h2>Edit Document</h2>
+  <h2>Edit Row</h2>
   <p>JSON Data</p>
   <form action="/<%= collection %>/<%= id %>" data="document" method="POST">
     <div id="json_error"></div>
@@ -20,8 +20,8 @@
   </form>
 </div>
 <div id="delete_document" class="popup" style="display:none;">
-  <h2>Delete Document</h2>
-  <p>Are you sure you want to delete this document?</p>
+  <h2>Delete Row</h2>
+  <p>Are you sure you want to delete this row?</p>
   <form action="/<%= collection %>/<%= id %>" data="document" method="POST">
     <input type="hidden" name="_method" value="delete">
     <div class="submit"><input type="submit" value="Delete"><a class="close">Cancel</a></div>    

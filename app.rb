@@ -114,25 +114,31 @@ get '/:collection' do
   skip = 0 if skip < 0
   page_size = 16
   thesearch = Hash.new
-  pp params
   
+  search_count = 0
+  search_url = String.new
   params.each {|key,value|
          pp key
          pp value
          case key
+         when "skip"
          when "splat"
          when "captures"
          when "collection"
          else
+            search_url << "&" + key + "=" + value
+            search_count = search_count + 1
             if value.include?(",")
               thevalue = value.split(",")
+              thesearch[key] = {"$in" => thevalue}
              else 
               thevalue = value
+              thesearch[key] = thevalue
               end
-            thesearch[key] = thevalue
             end
          }
   pp thesearch
+  pp search_url
   docs = collection.find(thesearch,{:skip => skip, :limit => page_size})
   erb :documents, :locals => { 
     :collection => name, 
@@ -141,7 +147,8 @@ get '/:collection' do
     :skip => skip, 
     :count => collection.count,
     :page_size => page_size,
-    :row_headings => row_headings
+    :row_headings => row_headings,
+    :search_url => search_url
     }
 end
 
