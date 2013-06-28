@@ -3,11 +3,59 @@ require 'sinatra'
 require 'json'
 require 'cgi'
 require 'mongo'
+require 'pp'
+
 
 disable :protection
 enable :method_override
 
 module Helpers
+  def first_col(d)
+      d.delete("_id")
+      d.each {|key,value|
+            return value.to_s
+            }
+      return("")
+  end
+  def next_to_col(d)
+      cols = String.new
+      d.delete("_id")
+      d.delete(d.keys[0])
+      d.each {|key,value|
+            cols << '<td>' + value.to_s + '</td>'
+            }
+      return(cols)
+  end
+  def doc_to_col(d)
+      cols = String.new
+      d.delete("_id")
+      d.each {|key,value|
+            cols << '<td>' + value.to_s + '</td>'
+            }
+      return(cols)
+  end
+  def get_heading(d)
+      name = d.collection
+      table = @db.collection(name)
+      firstrow = table.find_one()
+      return headings(firstrow)
+  end
+  def fieldnames(c)
+      headings = c.keys
+      headings.delete("_id")
+      headings.each_with_index {|heading, index|
+          headings[index] = heading.capitalize
+          }
+      return(headings)
+  end
+  def headings(c)
+      fields = fieldnames(c)
+      result = String.new
+      fields.each {|thefield|
+          result << '<th>' + thefield
+          }
+      return(result)
+  end
   def escape_html(h)
     CGI.escapeHTML(h.to_json)
   end
@@ -35,7 +83,7 @@ if ENV['VCAP_SERVICES']
   conn.add_auth( credentials['db'], credentials['username'], credentials['password'])
   db = conn.db(credentials['db'])
 else
-  db = Mongo::Connection.new.db('browser')
+  db = Mongo::Connection.new.db('logparse-db')
 end
 
 get '/' do
@@ -52,18 +100,39 @@ end
 get '/:collection' do
   headers["Cache-Control"] = "private" 
   name = params[:collection]
+
+  if name.include?("favicon")
+     return
+     end
+
+  table = db.collection(name)
+  firstrow = table.find_one()
+  row_headings = headings(firstrow)
+
   collection = db.collection(params[:collection])
   skip = ( params[:skip] || "0" ).to_i
   skip = 0 if skip < 0
   page_size = 16
-  docs = collection.find({},{:skip => skip, :limit => page_size})
+  thesearch = Hash.new
+  pp params
+  params.each {|key,value|
+         if key == "q"
+            values = value.split(',')
+            thekey = values[0]
+            thevalue = values[1]
+            thesearch[thekey] = thevalue
+            end
+         }
+  pp thesearch
+  docs = collection.find(thesearch,{:skip => skip, :limit => page_size})
   erb :documents, :locals => { 
     :collection => name, 
     :documents => docs, 
     :document => "{\n}", 
     :skip => skip, 
     :count => collection.count,
-    :page_size => page_size 
+    :page_size => page_size,
+    :row_headings => row_headings
     }
 end
 

@@ -13,11 +13,11 @@
   <% else %>
     <div class="table_wrapper">
       <table class="documents">
-        <tr><th>Document Id</th><th>Document Data</th></tr>      
+        <tr><%= row_headings %></th></tr>      
         <% documents.each do |d| %>
           <tr>
-            <td class="document_id"><a href="/<%= collection%>/<%= d['_id']%>"><%= d["_id"] %></a></td>
-            <td><%= truncate(escape_html(exclude_id(d)),180) %></td>
+            <td class="document_id"><a href="/<%= collection%>/<%= d['_id']%>"><%=first_col(d)%></a></td>
+            <%=next_to_col(d)%></a></td>
           </tr>
         <% end %>
       </table>
