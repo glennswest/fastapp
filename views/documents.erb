@@ -16,7 +16,7 @@
         <tr><%= row_headings %></th></tr>      
         <% documents.each do |d| %>
           <tr>
-            <td class="document_id"><a href="/<%= collection%>/<%= d['_id']%>"><%=first_col(d)%></a></td>
+            <td class="document_id"><a href="/<%= auto_link(collection,d) %>"><%=first_col(d)%></a></td>
             <%=next_to_col(d)%></a></td>
           </tr>
         <% end %>

@@ -18,5 +18,8 @@ Supports the following:
 
 New functionality
 * Moved to traditional table view, without id
-* Added search/sort functionality
-
+* Added search functionality http://tablename?field1=value1&field2=value1,value2,value3,
+* Adding fields= pareamter to url processing - http://tablename?fields=name,country
+* Added a Report Writer - Using a "mashup", and combining with the ability to search as well as page_size=0 to generate tables
+* added special field processing for fields named "url", which will automatically become the records default "view", good for
+  implementing "report" tables

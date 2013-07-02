@@ -17,12 +17,27 @@ module Helpers
             }
       return("")
   end
+  def auto_link(altname,d)
+      thelink = d["link"]
+      thekey = d["_id"].to_s
+      if thelink.nil?
+         result = altname + '/' + thekey
+        else
+         result = thelink
+         end
+      pp result
+      return(result)
+      end
   def next_to_col(d)
       cols = String.new
       d.delete("_id")
       d.delete(d.keys[0])
       d.each {|key,value|
-            cols << '<td>' + value.to_s + '</td>'
+            case key
+            when "link"
+            else 
+                 cols << '<td>' + value.to_s + '</td>'
+                 end
             }
       return(cols)
   end
@@ -47,6 +62,7 @@ module Helpers
          end
       headings = c.keys
       headings.delete("_id")
+      headings.delete("link")
       headings.each_with_index {|heading, index|
           if @fields_included.empty? 
              result <<  heading.capitalize
