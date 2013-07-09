@@ -35,7 +35,7 @@ include Mongo
        @forcedyeardotweek = value
        end
 
-   def clear_yeardotweek(value)
+   def clear_yeardotweek()
        @forcedyeardotweek = nil
        end
 
@@ -56,6 +56,7 @@ include Mongo
        existing = tbl.find_one(key => value)
        return(existing)
        end
+
    def find_value_by(tblname,key,value,valuecol)
        if @db.nil?
           Dbfast()
@@ -64,6 +65,7 @@ include Mongo
        existing = tbl.find_one(key => value)
        return(existing[valuecol])
        end
+
    def find_onecol(tblname,key,value,cname)
        if @db.nil?
           Dbfast()
@@ -77,6 +79,15 @@ include Mongo
        return(results)
        end
 
+   def find_distinct(tblname,cname)
+       if @db.nil?
+          Dbfast()
+          end
+       tbl = @db[tblname]
+       values = tbl.distinct(cname)
+       return(values)
+       end
+
    def addupdate(tblname,key,value,r)
        if @db.nil?
           Dbfast()
@@ -88,6 +99,29 @@ include Mongo
          else
           result = tbl.update({"_id" => existing["_id"]},r)
          end
+       return(result)
+       end
+
+   def addunique(tblname,key,value,r)
+       if @db.nil?
+          Dbfast()
+          end
+       tbl = @db[tblname]
+       existing = tbl.find_one(key => value)
+       if existing.nil?
+          result = tbl.insert(r)
+         else
+          return(existing)
+         end
+       return(result)
+       end
+
+   def add(tblname,r)
+       if @db.nil?
+          Dbfast()
+          end
+       tbl = @db[tblname]
+       result = tbl.insert(r)
        return(result)
        end
 

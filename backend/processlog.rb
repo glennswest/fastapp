@@ -1,6 +1,6 @@
 require 'mechanize'
 require 'pp'
-require './parselog'
+require './backend/parselog'
 require 'curb'
 
 agent = Mechanize.new

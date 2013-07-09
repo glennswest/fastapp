@@ -10,6 +10,13 @@ r = Hash.new
 r["name"] = "WeeklyRegionalReportAsia"
 r["filename"] = 'WeeklyRegionalAsia-#{yeardotweek}'
 r["reporttitle"] = 'Weekly Regional Report - Asia - #{yeardotweek}'
+r["driven_by_field"] = "find_distinct('data','week')"
+r["compare"] = "$driven_field < yeardotweek()"
+r["setup"] = "set_yeardotweek($driven_field)"
+tags = Array.new
+tags << '$driven_field'
+tags << "Asia"
+r["tags"] = tags
 c = Array.new
 theurl = 'country_week?region=Asia&week=#{yeardotweek}&fields=country,count&page_size=0'
 c << {"caption" => "Activity This Week", "url" =>  theurl}

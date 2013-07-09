@@ -6,17 +6,23 @@ require 'curl'
 
        
    def webget(url)
-         pp url
          curl = Curl::Easy.new(url)
          curl.perform
          return curl.body_str
          end
 
-   def RegisterReport(thename,url)
+   def RegisterReport(thename,url,tags)
        r = Hash.new
        r["name"] = thename
        r["link"] = url
-       addupdate("reports","name",thename,r)
+       result = addupdate("reports","name",thename,r)
+       end
+
+   def ReportExists?(reportname)
+       rt = find_by("_reporttemplate","name",reportname)
+       shortname = interpolate(rt["filename"])
+       filename = interpolate('./' + 'public/reports/' + shortname + ".html")
+       return(File.exists?(filename))
        end
 
    def FastReport(reportname)
@@ -31,8 +37,12 @@ require 'curl'
                 f << webget('http://' + fastappurl + '/' + interpolate(c["url"]))
                }
        f.close
-       RegisterReport(shortname,'reports/' + shortname + ".html")
+       RegisterReport(shortname,'reports/' + shortname + ".html",rt["tags"])
        end
 
-set_yeardotweek("2013.26")
-x = FastReport("WeeklyRegionalReportAsia")
+# Test the module
+if __FILE__ == $0
+   set_yeardotweek("2013.26")
+   x = FastReport("WeeklyRegionalReportAsia")
+   end
+
