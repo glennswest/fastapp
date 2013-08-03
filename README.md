@@ -23,3 +23,9 @@ New functionality
 * Added a Report Writer - Using a "mashup", and combining with the ability to search as well as page_size=0 to generate tables
 * added special field processing for fields named "url", which will automatically become the records default "view", good for
   implementing "report" tables
+* Added ability to pull a .xml file from a document via adding .xml to end
+  (Preparation for auto-generaiton of w2ui javascript)
+* Added w2ui-1.2 javascript components to public folder
+* Started dbschema, for generation of schema generation, as well as
+  full automatic gui (Coming soon)
+

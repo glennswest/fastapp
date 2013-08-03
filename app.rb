@@ -56,6 +56,7 @@ module Helpers
       return headings(firstrow)
   end
   def fieldnames(c)
+      pp c
       result = Array.new
       if c.nil?
          return(result)
@@ -121,6 +122,59 @@ post '/' do
   name = params[:collection]
   db.create_collection(name) if name
   redirect '/'
+end
+
+get '/:collection.json' do
+  headers["Cache-Control"] = "private" 
+  content_type :json
+
+  name = params[:collection]
+
+
+  table = db.collection(name)
+  firstrow = table.find_one()
+  @fields_included = Array.new
+
+  collection = db.collection(params[:collection])
+  skip = ( params[:skip] || "0" ).to_i
+  skip = 0 if skip < 0
+  page_size = 16
+  thesearch = Hash.new
+  
+  search_count = 0
+  search_url = String.new
+  field_projection = Hash.new
+  params.each {|key,value|
+         case key
+         when "fields"
+              thefields = value.split(",")
+              fieldvalues = Hash.new
+              thefields.each{|f|
+                   fieldvalues[f] = 1
+                   @fields_included << f
+                   }
+              field_projection[:fields] = fieldvalues
+         when "page_size"
+              page_size = value.to_i
+         when "skip"
+         when "splat"
+         when "captures"
+         when "collection"
+         else
+            search_url << "&" + key + "=" + value
+            search_count = search_count + 1
+            if value.include?(",")
+              thevalue = value.split(",")
+              thesearch[key] = {"$in" => thevalue}
+             else 
+              thevalue = value
+              thesearch[key] = thevalue
+              end
+            end
+         }
+  row_headings = headings(firstrow)
+  docs = collection.find(thesearch,field_projection)
+  return(docs.to_a.to_json)
 end
 
 get '/:collection' do

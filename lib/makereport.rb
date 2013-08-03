@@ -16,6 +16,7 @@ require 'curl'
        r["name"] = thename
        r["link"] = url
        result = addupdate("reports","name",thename,r)
+            
        end
 
    def ReportExists?(reportname)
