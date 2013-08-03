@@ -29,3 +29,5 @@ New functionality
 * Started dbschema, for generation of schema generation, as well as
   full automatic gui (Coming soon)
 
+Components used:
+w2u - http://w2ui.com/web/
