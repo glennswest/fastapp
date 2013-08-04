@@ -166,16 +166,15 @@ post '/:collection.json' do
 
   pp params
   name = params[:collection]
-
+  page_size = params["limit"].to_i
+  skip = params["offset"].to_i
 
   table = db.collection(name)
   firstrow = table.find_one()
   @fields_included = Array.new
 
   collection = db.collection(params[:collection])
-  skip = ( params[:skip] || "0" ).to_i
   skip = 0 if skip < 0
-  page_size = 16
   thesearch = Hash.new
   
   search_count = 0
@@ -209,9 +208,27 @@ post '/:collection.json' do
               end
             end
          }
-  row_headings = headings(firstrow)
-  docs = collection.find(thesearch,field_projection)
-  return(docs.to_a.to_json)
+  d = Hash.new
+  d["total"] = collection.count.to_i
+  d["page"] = (skip / page_size).to_i + 1
+  td = Array.new
+  collection.find.each {|row|
+             e = Hash.new
+             row.each {|key,value|
+                  case key
+                  when "_id"
+                      e["recid"] = value
+                  else
+                      e[key] = value
+                      end
+                  }
+             td << e
+            }
+       
+  d["records"] = td
+  pp d.to_json
+
+  return(d.to_json)
 end
 
 get '/:collection' do
