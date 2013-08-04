@@ -58,6 +58,9 @@ end
 def create_schema_for_collection(name) 
       table = @db.collection(name)
       c = table.find_one()
+      if c.nil?
+         return nil
+         end
       schema = Hash.new
       schema["name"] = name
       schema["heading"] = name.capitalize
@@ -70,7 +73,7 @@ def create_schema_for_collection(name)
       fields.each_with_index {|field, index|
           thefield = Hash.new
           thefield["name"] = field
-          thefield["heading"] = field.capitalize
+          thefield["caption"] = field.capitalize
           thefield["hidden"] = false
           thefield["readonly"] = false
           thefield["relationship"] = false
@@ -89,6 +92,29 @@ def create_schema_for_collection(name)
       return(schema)
       end
 
-      db = Dbfast()
-      result = create_schema_for_collection("countrycode")
-      pp result
+def check_schema(name)
+    schema = find_by("fast.schema","name",name)
+    if schema.nil?
+       s = create_schema_for_collection(name)
+       if !s.nil?
+          add("fast.schema",s)
+          end
+       end
+    end
+
+def scan_collections()
+      @db.collections.each do | collection |
+          name =  collection.name.to_s()
+          case name
+               when "system.indexes"
+               when "fast.schema"
+               else 
+                check_schema(name)
+               end
+          end
+      end
+
+def init_schema()
+    db = Dbfast()
+      scan_collections()
+    end
