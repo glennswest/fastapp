@@ -3,6 +3,8 @@ require 'sinatra'
 require 'json'
 require 'cgi'
 require 'mongo'
+require './lib/dbfast.rb'
+require './lib/dbschema.rb'
 require 'pp'
 
 
@@ -113,6 +115,8 @@ else
   db = Mongo::Connection.new.db('fastapp')
 end
 
+init_schema()
+
 get '/' do
   headers["Cache-Control"] = "private" 
   erb :collections, :locals => { :collections => db.collections.reject { |x| x.name =~ /system\./ } }
@@ -124,10 +128,43 @@ post '/' do
   redirect '/'
 end
 
-get '/:collection.json' do
+get '/:collection.html' do
+  headers["Cache-Control"] = "private" 
+  content_type :html
+  name = params[:collection]
+  result = String.new
+  
+  schema = find_by("fast.schema","name",name)
+  if schema.nil?
+     return ("")
+     end
+  result << '<!DOCTYPE html>' + "\n"
+  result << '<html>' + "\n"
+  result << '<head>' + "\n"
+  result << '   <title>' + schema["heading"] + '</title>' + "\n"
+  result << '   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' + "\n"
+  result << '   <link rel="stylesheet" id="mainCSS" type="text/css" media="screen" href="/js/w2ui-1.2.min.css" />' + "\n"
+  result << '   <link rel="stylesheet" type="text/css" media="screen" href="/css/font-awesome.css" /> ' + "\n"
+  result << '   <link rel="stylesheet" type="text/css" media="screen" href="/index.css"/>' + "\n"
+  result << '   <script type="text/javascript" src="/js/jquery.min.js"></script>' + "\n"
+  result << '   <script type="text/javascript" src="/js/w2ui-1.2.min.js"></script>' + "\n"
+  result << "</head>\n"
+  result << "<body>\n"
+  result << '<div id="' + name + '" style="width: 100%; height: 350px;"></div>'
+  result << "</body>\n"
+  result << "<script>\n"
+  result <<  generate_javascript(name)
+  result << "</script>\n"
+  result << "</html>\n"
+   
+  return result
+end
+
+post '/:collection.json' do
   headers["Cache-Control"] = "private" 
   content_type :json
 
+  pp params
   name = params[:collection]
 
 
