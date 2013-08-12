@@ -103,7 +103,7 @@ end
 
 helpers Helpers
 
-if ENV['FASTAPP']
+if ENV['OPENSHIFT_APP_NAME']
   service_type = "mongodb-1.8";
   conn = Mongo::Connection.new( ENV['OPENSHIFT_MONGODB_DB_HOST'], 
                                 ENV['OPENSHIFT_MONGODB_DB_PORT'])
