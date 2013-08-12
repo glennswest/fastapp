@@ -1,0 +1,3 @@
+echo "Weekly Processing"
+cd ~
+ruby backend/processlog.rb
