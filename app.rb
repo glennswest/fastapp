@@ -107,8 +107,8 @@ if ENV['OPENSHIFT_APP_NAME']
   service_type = "mongodb-1.8";
   conn = Mongo::Connection.new( ENV['OPENSHIFT_MONGODB_DB_HOST'], 
                                 ENV['OPENSHIFT_MONGODB_DB_PORT'])
-  auth = db.authenticate(ENV['OPENSHIFT_MONGODB_DB_USERNAME'],
-                         ENV['OPENSHIFT_MONGODB_DB_PASSWORD'])
+  auth = conn.db.authenticate(ENV['OPENSHIFT_MONGODB_DB_USERNAME'],
+                              ENV['OPENSHIFT_MONGODB_DB_PASSWORD'])
   db = conn.db(ENV['OPENSHIFT_APP_NAME'])
 else
   db = Mongo::Connection.new.db('fastapp')
