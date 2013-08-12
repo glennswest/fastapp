@@ -9,20 +9,19 @@ include Mongo
 
 
    def Dbfast
-      if ENV['FASTAPP']
-         service_type = "mongodb-1.8";
-         json = JSON.parse(ENV['FASTAPP']);
-         credentials = json[service_type][0]["credentials"]
-         puts credentials.inspect
-         conn = Mongo::Connection.new( credentials['host'], credentials['port'])
-         conn.add_auth( credentials['db'], credentials['username'], credentials['password'])
-         db = conn.db(credentials['db'])
-        else
-         db = Mongo::Connection.new.db('fastapp')
+       if ENV['OPENSHIFT_APP_NAME']
+          service_type = "mongodb-1.8";
+          dbname = ENV['OPENSHIFT_APP_NAME']
+          db = Mongo::Connection.new( ENV['OPENSHIFT_MONGODB_DB_HOST'],
+                                      ENV['OPENSHIFT_MONGODB_DB_PORT']).db(dbname)
+          auth = db.authenticate(ENV['OPENSHIFT_MONGODB_DB_USERNAME'],
+                                 ENV['OPENSHIFT_MONGODB_DB_PASSWORD'])
+else
+          db = Mongo::Connection.new.db('fastapp')
+end
+        @db = db
+        return db
         end
-      @db = db
-      return db
-      end
 
    def fastappurl()
        if ENV['FASTAPPURL']

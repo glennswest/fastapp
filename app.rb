@@ -103,17 +103,7 @@ end
 
 helpers Helpers
 
-if ENV['OPENSHIFT_APP_NAME']
-  service_type = "mongodb-1.8";
-  dbname = ENV['OPENSHIFT_APP_NAME']
-  db = Mongo::Connection.new( ENV['OPENSHIFT_MONGODB_DB_HOST'], 
-                                ENV['OPENSHIFT_MONGODB_DB_PORT']).db(dbname)
-  auth = db.authenticate(ENV['OPENSHIFT_MONGODB_DB_USERNAME'],
-                         ENV['OPENSHIFT_MONGODB_DB_PASSWORD'])
-  pp db
-else
-  db = Mongo::Connection.new.db('fastapp')
-end
+Dbfast()
 
 init_schema()
 
