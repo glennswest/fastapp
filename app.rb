@@ -105,8 +105,9 @@ helpers Helpers
 
 if ENV['OPENSHIFT_APP_NAME']
   service_type = "mongodb-1.8";
+  dbname = ENV['OPENSHIFT_APP_NAME']
   conn = Mongo::Connection.new( ENV['OPENSHIFT_MONGODB_DB_HOST'], 
-                                ENV['OPENSHIFT_MONGODB_DB_PORT'])
+                                ENV['OPENSHIFT_MONGODB_DB_PORT']).db(dbname)
   auth = conn.db.authenticate(ENV['OPENSHIFT_MONGODB_DB_USERNAME'],
                               ENV['OPENSHIFT_MONGODB_DB_PASSWORD'])
   db = conn.db(ENV['OPENSHIFT_APP_NAME'])
