@@ -103,7 +103,7 @@ end
 
 helpers Helpers
 
-Dbfast()
+db = Dbfast()
 
 init_schema()
 
