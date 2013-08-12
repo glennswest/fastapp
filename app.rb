@@ -110,6 +110,7 @@ if ENV['OPENSHIFT_APP_NAME']
                                 ENV['OPENSHIFT_MONGODB_DB_PORT']).db(dbname)
   auth = db.authenticate(ENV['OPENSHIFT_MONGODB_DB_USERNAME'],
                          ENV['OPENSHIFT_MONGODB_DB_PASSWORD'])
+  pp db
 else
   db = Mongo::Connection.new.db('fastapp')
 end
