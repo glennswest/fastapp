@@ -10,9 +10,3 @@ gem 'geoip'
 gem 'iconv'
 gem 'curb'
 gem 'mechanize'
-
-Bundler.require
-
-require './app.rb'
-
-run Sinatra::Application

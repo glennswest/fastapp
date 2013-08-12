@@ -105,11 +105,11 @@ helpers Helpers
 
 if ENV['FASTAPP']
   service_type = "mongodb-1.8";
-  json = JSON.parse(ENV['FASTAPP']);
-  credentials = json[service_type][0]["credentials"]
-  puts credentials.inspect
-  conn = Mongo::Connection.new( credentials['host'], credentials['port'])
-  conn.add_auth( credentials['db'], credentials['username'], credentials['password'])
+  conn = Mongo::Connection.new( ENV['OPENSHIFT_MONGODB_DB_HOST'], 
+                                ENV['OPENSHIFT_MONGODB_DB_PORT'])
+  conn.add_auth( ENV['OPENSHIFT_APP_NAME'], 
+                 ENV['OPENSHIFT_MONGODB_DB_USERNAME'],
+                 ENV['OPENSHIFT_MONGODB_DB_PASSWORD'])
   db = conn.db(credentials['db'])
 else
   db = Mongo::Connection.new.db('fastapp')
