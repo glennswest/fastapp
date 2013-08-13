@@ -22,23 +22,23 @@ require 'curl'
    def ReportExists?(reportname)
        rt = find_by("_reporttemplate","name",reportname)
        shortname = interpolate(rt["filename"])
-       filename = interpolate('./' + 'public/reports/' + shortname + ".html")
-       return(File.exists?(filename))
+       filename = interpolate(shortname + ".html")
+       return(GridFileExists?(filename))
        end
 
    def FastReport(reportname)
        rt = find_by("_reporttemplate","name",reportname)
        shortname = interpolate(rt["filename"])
-       filename = interpolate('./' + 'public/reports/' + shortname + ".html")
-       f = File.open(filename,"w")
-       f << "<h1>" + interpolate(rt["reporttitle"]) + '</h1>'
+       filename = interpolate(shortname + ".html")
+       f = GridFileOpen(filename,"w")
+       f.write "<h1>" + interpolate(rt["reporttitle"]) + '</h1>'
        cs = rt["components"]
        cs.each {|c|
-                f << "<h2>" + interpolate(c["caption"]) + "</h2>"
-                f << webget('http://' + fastappurl + '/' + interpolate(c["url"]))
+                f.write "<h2>" + interpolate(c["caption"]) + "</h2>"
+                f.write webget('http://' + fastappurl + '/' + interpolate(c["url"]))
                }
        f.close
-       RegisterReport(shortname,'reports/' + shortname + ".html",rt["tags"])
+       RegisterReport(shortname,'files/' + shortname + ".html",rt["tags"])
        end
 
 # Test the module

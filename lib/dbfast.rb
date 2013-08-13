@@ -21,8 +21,35 @@ else
           db = Mongo::Connection.new.db('fastapp')
 end
         @db = db
+        @grid = Mongo::GridFileSystem.new(@db)
         return db
         end
+
+   
+   def GridFileExists?(filename)
+       if @db.nil?
+          Dbfast()
+          end
+       result = @grid.exist?(:filename => filename)
+       if result.nil?
+          return false
+          end
+       return true
+       end
+   def GridFileOpen(filename,mode)
+       if @db.nil?
+          Dbfast()
+          end
+       result = @grid.open(filename, mode)
+       return result
+       end
+   def GridFileDelete(filename)
+       if @db.nil?
+          Dbfast()
+          end
+       result = @grid.delete(filename)
+       return result
+       end
 
    def fastappurl()
        if ENV['OPENSHIFT_APP_DNS']

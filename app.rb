@@ -116,6 +116,19 @@ post '/' do
   redirect '/'
 end
 
+get '/files/:filename' do
+  headers["Cache-Control"] = "private"
+  content_type :html
+  name = params[:filename]
+  result = String.new
+
+  pp name
+  f = GridFileOpen(name,"r") 
+  result = f.read
+  pp result
+  return(result)
+  end
+
 get '/:collection.html' do
   headers["Cache-Control"] = "private" 
   content_type :html
