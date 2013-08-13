@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'bundler/setup'
 require 'mongo'
 require 'pp'
 require 'geoip'
