@@ -17,5 +17,5 @@ tmp
 _yardoc
 doc/
 archive
+public/reports/*
 data
-public/reports
