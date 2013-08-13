@@ -139,6 +139,7 @@ end
           result = tbl.insert(r)
          else
           return(existing)
+
          end
        return(result)
        end
@@ -153,5 +154,14 @@ end
        end
 
    def interpolate(str)
-       return(eval("\"" + str + "\""))
+       begin
+         if str.include?('{')
+            return(eval("\"" + str + "\""))
+           else 
+            return(eval(str))
+           end
+       rescue
+          return(str)
+          end
+
        end

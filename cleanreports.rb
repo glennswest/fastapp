@@ -6,5 +6,7 @@ require "./lib/dbfast.rb"
 	@db["fs.chunks"].remove()
         puts "Clearing Reports"
 	@db["reports"].remove()
+        @db["tag"].remove()
+        @db["tag.link"].remove()
     
 

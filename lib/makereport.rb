@@ -16,7 +16,18 @@ require 'curl'
        r["name"] = thename
        r["link"] = url
        result = addupdate("reports","name",thename,r)
-            
+       tags.each {|t|
+            tagvalue = interpolate(t).to_s
+            tv = Hash.new
+            tv["name"] = tagvalue
+            tv["link"] = "tag.link?tag=" + tagvalue + "&fields=name"
+            result = addupdate("tag","name",tagvalue,tv)
+            tl = Hash.new
+            tl["name"] = thename
+            tl["tag"] = tagvalue
+            tl["link"] = url
+            result = add("tag.link",tl)
+            }
        end
 
    def ReportExists?(reportname)
@@ -30,6 +41,10 @@ require 'curl'
        rt = find_by("_reporttemplate","name",reportname)
        shortname = interpolate(rt["filename"])
        filename = interpolate(shortname + ".html")
+       thetags = Array.new
+       rt["tags"].each {|tt|
+          thetags << interpolate(tt)
+          }
        f = GridFileOpen(filename,"w")
        f.write "<h1>" + interpolate(rt["reporttitle"]) + '</h1>'
        cs = rt["components"]
@@ -38,7 +53,7 @@ require 'curl'
                 f.write webget('http://' + fastappurl + '/' + interpolate(c["url"]))
                }
        f.close
-       RegisterReport(shortname,'files/' + shortname + ".html",rt["tags"])
+       RegisterReport(shortname,'files/' + shortname + ".html",thetags)
        end
 
 # Test the module

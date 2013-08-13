@@ -6,6 +6,8 @@ def do_report(rt)
     if !rt["setup"].nil?
        eval(rt["setup"])
        end
+    pp $driven_field
+
     FastReport(rt["name"])
     end
 
@@ -28,6 +30,7 @@ rts.each {|rt|
                    end
                 if ReportExists?(rt["name"]) == false
                    puts "Generating Report " + $driven_field
+                   pp $driven_field
                    do_report(rt)
                    end
                 end
