@@ -25,8 +25,8 @@ end
         end
 
    def fastappurl()
-       if ENV['FASTAPPURL']
-          return(ENV['FASTAPPURL'])
+       if ENV['OPENSHIFT_APP_DNS']
+          return(ENV['OPENSHIFT_APP_DNS'])
           end
        return("localhost:4567")
        end
