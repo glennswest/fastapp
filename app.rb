@@ -27,7 +27,6 @@ module Helpers
         else
          result = thelink
          end
-      pp result
       return(result)
       end
   def next_to_col(d)
@@ -58,7 +57,6 @@ module Helpers
       return headings(firstrow)
   end
   def fieldnames(c)
-      pp c
       result = Array.new
       if c.nil?
          return(result)
@@ -154,7 +152,6 @@ post '/:collection.json' do
   headers["Cache-Control"] = "private" 
   content_type :json
 
-  pp params
   name = params[:collection]
   page_size = params["limit"].to_i
   skip = params["offset"].to_i
@@ -216,7 +213,6 @@ post '/:collection.json' do
             }
        
   d["records"] = td
-  pp d.to_json
 
   return(d.to_json)
 end
@@ -243,8 +239,6 @@ get '/:collection' do
   search_url = String.new
   field_projection = Hash.new
   params.each {|key,value|
-         pp key
-         pp value
          case key
          when "fields"
               thefields = value.split(",")
@@ -254,7 +248,6 @@ get '/:collection' do
                    @fields_included << f
                    }
               field_projection[:fields] = fieldvalues
-              pp field_projection
          when "page_size"
               page_size = value.to_i
          when "skip"
@@ -274,8 +267,6 @@ get '/:collection' do
             end
          }
   row_headings = headings(firstrow)
-  pp thesearch
-  pp search_url
   if page_size == 0
      docs = collection.find(thesearch,field_projection)
     else 
@@ -284,7 +275,6 @@ get '/:collection' do
      options.merge!(pagings)
      options.merge!(field_projection)
      puts "Options"
-     pp options
      docs = collection.find(thesearch,options)
      end
   if page_size == 0
