@@ -122,10 +122,8 @@ get '/files/:filename' do
   name = params[:filename]
   result = String.new
 
-  pp name
   f = GridFileOpen(name,"r") 
   result = f.read
-  pp result
   return(result)
   end
 
@@ -287,7 +285,6 @@ get '/:collection' do
      options = Hash.new
      options.merge!(pagings)
      options.merge!(field_projection)
-     puts "Options"
      docs = collection.find(thesearch,options)
      end
   if page_size == 0
