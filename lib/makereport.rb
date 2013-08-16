@@ -20,7 +20,7 @@ require 'curl'
             tagvalue = interpolate(t).to_s
             tv = Hash.new
             tv["name"] = tagvalue
-            tv["link"] = "tag.link?tag=" + tagvalue + "&fields=name"
+            tv["link"] = "tag.link?tag=" + tagvalue + "&fields=name,link"
             result = addupdate("tag","name",tagvalue,tv)
             tl = Hash.new
             tl["name"] = thename
