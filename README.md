@@ -28,6 +28,9 @@ New functionality
 * Added w2ui-1.2 javascript components to public folder
 * Started dbschema, for generation of schema generation, as well as
   full automatic gui (Coming soon)
+* Taginging working
+
+
 
 Components used:
 w2u - http://w2ui.com/web/
