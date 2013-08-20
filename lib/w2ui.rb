@@ -73,7 +73,7 @@ def w2ui_form_html(name)
 
   result = String.new
   result = String.new
-  result << '<div id="' + name + '_form" style="width: 750px;">' + "\n"
+  result << '<div id="' + name + '_form" style="width: 1000px;">' + "\n"
   result << '    <div class="w2ui-page page-0">' + "\n"
 
 
