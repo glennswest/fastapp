@@ -115,42 +115,6 @@ def scan_collections()
           end
       end
 
-def generate_javascript(name)
-  schema = find_by("fast.schema","name",name)
-  if schema.nil?
-     return ("")
-     end
-  fields = schema["schema"]
-
-  result = String.new
-  result << "$('#" + name + "').w2grid({" + "\n"
-  result << "   name: '" + name + "',\n"
-  result << "   url: '" + name + ".json',\n"
-  result << "   columns: [\n"
-  fieldcnt = fields.count
-  cnt = 0
-  fields.each{|f|
-       cnt = cnt + 1
-       if f["hidden"] == false
-          case f["type"]
-             when "String"
-                result << "             "
-                result << "{ field: '" + f["name"] + "'"
-                result << ", caption: '" + f["caption"] + "', "
-                result << "size: '" + f["size"] + "' }"
-                if cnt < fieldcnt
-                   result << ",\n"
-                  else
-                   result << "\n"
-                   end
-                end
-          end
-       }
-    result << "            ]\n"
-    result << "});\n"
-    return result
-end
-
 def init_schema()
     db = Dbfast()
     scan_collections()

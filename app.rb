@@ -5,6 +5,7 @@ require 'cgi'
 require 'mongo'
 require './lib/dbfast.rb'
 require './lib/dbschema.rb'
+require './lib/w2ui.rb'
 require 'pp'
 
 
@@ -137,22 +138,11 @@ get '/:collection.html' do
   if schema.nil?
      return ("")
      end
-  result << '<!DOCTYPE html>' + "\n"
-  result << '<html>' + "\n"
-  result << '<head>' + "\n"
-  result << '   <title>' + schema["heading"] + '</title>' + "\n"
-  result << '   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' + "\n"
-  result << '   <link rel="stylesheet" id="mainCSS" type="text/css" media="screen" href="/js/w2ui-1.2.min.css" />' + "\n"
-  result << '   <link rel="stylesheet" type="text/css" media="screen" href="/css/font-awesome.css" /> ' + "\n"
-  result << '   <link rel="stylesheet" type="text/css" media="screen" href="/index.css"/>' + "\n"
-  result << '   <script type="text/javascript" src="/js/jquery.min.js"></script>' + "\n"
-  result << '   <script type="text/javascript" src="/js/w2ui-1.2.min.js"></script>' + "\n"
-  result << "</head>\n"
-  result << "<body>\n"
+  result << w2ui_pageheader(name)
   result << '<div id="' + name + '" style="width: 100%; height: 350px;"></div>'
   result << "</body>\n"
   result << "<script>\n"
-  result <<  generate_javascript(name)
+  result <<  w2ui_grid(name)
   result << "</script>\n"
   result << "</html>\n"
    
@@ -325,6 +315,24 @@ delete '/:collection' do
   collection = db.collection(name)
   collection.drop if collection
   redirect "/"
+end
+
+get '/:collection/:id.html' do
+  headers["Cache-Control"] = "private" 
+  name = params[:collection]
+  collection = db.collection(name)
+  id = BSON::ObjectId(params[:id])
+  document = collection.find_one({ "_id" => id }, { :fields => { "_id" => 0 }} ) || {}
+  result = String.new
+  result << w2ui_pageheader(name)
+  # result << '<div id="' + name + '" style="width: 100%; height: 350px;"></div>'
+  result << w2ui_form_html(name)
+  result << "</body>\n"
+  result << "<script>\n"
+  result <<  w2ui_form_js(name)
+  result << "</script>\n"
+  result << "</html>\n"
+  return(result)
 end
 
 get '/:collection/:id' do
