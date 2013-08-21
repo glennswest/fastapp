@@ -38,7 +38,7 @@ def w2ui_grid(name)
   result = String.new
   result << "$('#" + name + "').w2grid({" + "\n"
   result << "   name: '" + name + "',\n"
-  result << "   url: server.post\n"
+  result << "   url: '" + name + ".json',\n"
   result << "   columns: [\n"
   fieldcnt = fields.count
   cnt = 0
