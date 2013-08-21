@@ -38,7 +38,7 @@ def w2ui_grid(name)
   result = String.new
   result << "$('#" + name + "').w2grid({" + "\n"
   result << "   name: '" + name + "',\n"
-  result << "   url: '" + name + ".json',\n"
+  result << "   url: server.post\n"
   result << "   columns: [\n"
   fieldcnt = fields.count
   cnt = 0
@@ -72,7 +72,6 @@ def w2ui_form_html(name)
   fields = schema["schema"]
 
   result = String.new
-  result = String.new
   result << '<div id="' + name + '_form" style="width: 1000px;">' + "\n"
   result << '    <div class="w2ui-page page-0">' + "\n"
 
@@ -84,18 +83,19 @@ def w2ui_form_html(name)
        if f["hidden"] == false
           case f["type"]
              when "String"
-                result << "             "
-                result << '     <div class="w2ui-label">' + f["name"] + ':</div>' + "\n"
+                result << '     <div class="w2ui-label">' + f["caption"] + ':</div>' + "\n"
+                result << '     <div class="w2ui-field">' + "\n"
                 result << '         <input name="' +  f["name"] + '" type="text" maxlength="100"'
                 result << ' size="' + f["size"] + '"/>' + "\n"
-                result << "</div>\n"
+                result << "     </div>\n"
                 end
           end
        }
-    result << "</div>\n"
-    result << '<div class="w2ui-buttons">' + "\n"
+    result << "   </div>\n"
+    result << ' <div class="w2ui-buttons">' + "\n"
     result << '  <input type="button" value="Reset" name="reset">' + "\n"
     result << '  <input type="button" value="Save" name="save">' + "\n"
+    result << ' </div>' + "\n"
     result << '</div>' + "\n"
     return result
 end
@@ -108,7 +108,8 @@ def w2ui_form_js(name)
   fields = schema["schema"]
 
   result = String.new
-  result << "$('#" + name + "').w2form({" + "\n"
+  result << "$('#" + name + "_form').w2destroy(" + '"' + name + '_form");' + "\n"
+  result << "$('#" + name + "_form').w2form({" + "\n"
   result << "   name: '" + name + "_form',\n"
   result << "   url: '" + name + ".json',\n"
   result << "   fields: [\n"

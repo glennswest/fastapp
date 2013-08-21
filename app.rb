@@ -327,10 +327,10 @@ get '/:collection/:id.html' do
   result << w2ui_pageheader(name)
   # result << '<div id="' + name + '" style="width: 100%; height: 350px;"></div>'
   result << w2ui_form_html(name)
-  result << "</body>\n"
   result << "<script>\n"
   result <<  w2ui_form_js(name)
   result << "</script>\n"
+  result << "</body>\n"
   result << "</html>\n"
   return(result)
 end
